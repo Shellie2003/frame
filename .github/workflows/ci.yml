@@ -1,0 +1,90 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Vérifications (types, tests, smoke)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Tests unitaires
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      # Xvfb permet de lancer réellement l'application sans écran :
+      # le smoke test vérifie que chaque vue est bien émulée aux dimensions de son appareil.
+      - name: Installer Xvfb
+        run: sudo apt-get update && sudo apt-get install -y xvfb
+
+      - name: Smoke test
+        run: npm run smoke
+
+  package:
+    name: Paquets ${{ matrix.os }}
+    needs: check
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            artifact: frame-linux
+            target: dist:linux
+          - os: windows-latest
+            artifact: frame-windows
+            target: dist:win
+          - os: macos-latest
+            artifact: frame-macos
+            target: dist:mac
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Construire les paquets
+        run: npm run ${{ matrix.target }}
+        env:
+          # Aucun certificat n'est configuré : on désactive la signature plutôt que d'échouer.
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          if-no-files-found: error
+          retention-days: 14
+          path: |
+            release/*.AppImage
+            release/*.deb
+            release/*.exe
+            release/*.dmg
+            release/*.zip

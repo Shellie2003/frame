@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'" />
+    <title>Frame — test de responsivité</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-theme="dark">
+    <header class="toolbar">
+      <div class="nav">
+        <button id="back" class="icon" title="Précédent (toutes les vues)">‹</button>
+        <button id="forward" class="icon" title="Suivant (toutes les vues)">›</button>
+        <button id="reload" class="icon" title="Recharger (Ctrl+R)">⟳</button>
+      </div>
+      <form id="url-form" class="url">
+        <input
+          id="url-input"
+          type="text"
+          spellcheck="false"
+          autocomplete="off"
+          placeholder="exemple.com, localhost:3000, https://…"
+        />
+        <button type="submit" class="primary">Ouvrir</button>
+      </form>
+      <div class="controls">
+        <label class="zoom">
+          Zoom
+          <input id="zoom" type="range" min="20" max="100" step="5" />
+          <span id="zoom-value" class="value">50 %</span>
+        </label>
+        <button id="rotate" class="ghost" title="Pivoter les mobiles et tablettes (Ctrl+Alt+R)">Pivoter</button>
+        <label class="toggle" title="Répercuter le défilement sur tous les appareils">
+          <input id="sync-scroll" type="checkbox" /> Défilement lié
+        </label>
+        <button id="capture" class="ghost" title="Capturer tous les appareils (Ctrl+Maj+S)">Capturer</button>
+        <button id="theme" class="ghost" title="Thème clair / sombre">Thème</button>
+      </div>
+    </header>
+
+    <div class="body">
+      <aside class="sidebar">
+        <h2>Appareils</h2>
+        <div id="device-list"></div>
+      </aside>
+      <main id="stage" class="stage"></main>
+    </div>
+
+    <footer class="status">
+      <span id="status-text">Prêt.</span>
+      <span id="status-meta" class="meta"></span>
+    </footer>
+
+    <template id="frame-template">
+      <section class="frame">
+        <div class="frame-head">
+          <div class="frame-title">
+            <span class="frame-name"></span>
+            <span class="frame-size"></span>
+          </div>
+          <div class="frame-actions">
+            <button class="icon act-reload" title="Recharger cet appareil">⟳</button>
+            <button class="icon act-shot" title="Capturer cet appareil">▣</button>
+            <button class="icon act-external" title="Ouvrir dans le navigateur système">↗</button>
+          </div>
+        </div>
+        <div class="frame-viewport">
+          <div class="frame-scale"></div>
+        </div>
+      </section>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>

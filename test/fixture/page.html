@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Page témoin</title>
+    <style>
+      body { font: 16px system-ui; margin: 0; padding: 24px; background: #eef; }
+      .box { padding: 24px; background: #fff; border-radius: 8px; }
+      .wide { display: none; }
+      @media (min-width: 768px) { .wide { display: block; } body { background: #efe; } }
+      @media (pointer: coarse) { body { background: #fee; } }
+      .tall { height: 3000px; }
+    </style>
+  </head>
+  <body>
+    <div class="box">
+      <h1>Page témoin</h1>
+      <p id="dims"></p>
+      <p class="wide">Mise en page large active.</p>
+    </div>
+    <div class="tall"></div>
+    <script>
+      document.getElementById('dims').textContent =
+        window.innerWidth + '×' + window.innerHeight + ' @' + window.devicePixelRatio;
+    </script>
+  </body>
+</html>
