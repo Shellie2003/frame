@@ -33,16 +33,20 @@ Chaque cadre a son propre viewport, son propre DPR, son propre user-agent et sa 
 
 ## Installation
 
-Téléchargez le paquet correspondant à votre système depuis la page
+**Windows** est la seule plateforme distribuée pour le moment. Téléchargez depuis la page
 [Releases](https://github.com/shellie2003/frame/releases) :
 
-| Système | Fichiers |
+| Fichier | Usage |
 | --- | --- |
-| Linux | `Frame-x.y.z.AppImage`, `frame_x.y.z_amd64.deb` |
-| Windows | `Frame Setup x.y.z.exe`, version portable |
-| macOS | `Frame-x.y.z.dmg`, `.zip` |
+| `Frame Setup x.y.z.exe` | installateur (choix du dossier d'installation) |
+| `Frame x.y.z.exe` | version portable, sans installation |
 
-Les paquets ne sont pas signés : macOS et Windows afficheront un avertissement au premier lancement.
+Le paquet n'est pas signé : Windows SmartScreen affichera un avertissement au premier lancement
+(*Informations complémentaires* → *Exécuter quand même*).
+
+La configuration de packaging Linux et macOS reste présente dans `electron-builder.yml`
+(`npm run dist:linux`, `npm run dist:mac`) ; il suffit de rajouter ces cibles aux workflows pour
+les distribuer aussi.
 
 ## Développement
 
@@ -102,10 +106,10 @@ Une entrée dans `DEVICES` (`src/shared/devices.ts`) suffit ; l'interface et les
 ## Intégration continue
 
 - **`.github/workflows/ci.yml`** — à chaque push et pull request : typecheck, tests unitaires, build, puis
-  smoke test qui lance réellement l'application sous Xvfb et vérifie que chaque vue est émulée aux bonnes
-  dimensions. Ensuite, packaging Linux / Windows / macOS en parallèle, déposé en artefacts.
-- **`.github/workflows/release.yml`** — sur un tag `v*` : construit les trois plateformes et attache les
-  paquets à une release GitHub en brouillon.
+  smoke test qui lance réellement l'application sous Xvfb (runner Linux) et vérifie que chaque vue est
+  émulée aux bonnes dimensions. Si tout passe, packaging **Windows** déposé en artefact `frame-windows`.
+- **`.github/workflows/release.yml`** — sur un tag `v*` : construit les paquets Windows et les attache à
+  une release GitHub en brouillon.
 
 ## Licence
 
