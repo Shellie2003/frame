@@ -32,5 +32,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/shellie2003/frame.git"
+  },
+  "engines": {
+    "node": ">=22"
   }
 }

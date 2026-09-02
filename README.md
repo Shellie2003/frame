@@ -46,6 +46,8 @@ Les paquets ne sont pas signés : macOS et Windows afficheront un avertissement 
 
 ## Développement
 
+Node 22 ou plus récent (le lanceur de tests intégré n'étend les motifs glob qu'à partir de cette version).
+
 ```bash
 npm install
 npm start                       # build + lancement
